@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Journal - Web Animations Class (Layout 1 with Multimedia)</title>
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/ink-journal');
+    /* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Global Styles */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: Ink Journal, cursive;
+  line-height: 1.6;
+}
+
+/* Header & Navigation */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #111;
+  border-bottom: 2px solid #444;
+}
+
+.logo .title {
+  font-family: 'Ink Journal', cursive;
+  font-size: 2.5em;
+  color: silver;
+}
+
+.logo .subtitle {
+  font-size: 1em;
+  color: purple;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav li {
+  margin: 0 15px;
+}
+
+nav a {
+  text-decoration: none;
+  color: purple;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: silver;
+}
+
+/* Intro Section */
+.intro {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.intro h2 {
+  color: purple;
+  margin-bottom: 20px;
+}
+.featured-animation {
+  margin-top: 20px;
+  height: 200px;
+  border: 2px dashed purple;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ball-image {
+  max-height: 80%;
+  max-width: 80%;
+  position: relative;
+  animation: ballFloat 3s ease-in-out infinite alternate;
+}
+
+/* Add image HTML element to the featured-animation div */
+.featured-animation img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  z-index: 2;
+  position: relative;
+  animation: ballRoll 3s linear infinite;
+}
+
+@keyframes ballRoll {
+  0% {
+    transform: translateX(-50px) rotate(0deg);
+  }
+  100% {
+    transform: translateX(50px) rotate(360deg);
+  }
+}
+
+@keyframes ballFloat {
+  0% {
+    transform: translateY(0) scale(0.9);
+  }
+  100% {
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+.featured-animation canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Experiment Log */
+#experiments {
+  padding: 20px;
+}
+
+#experiments h2 {
+  color: purple;
+  margin-bottom: 20px;
+}
+
+.experiment {
+  margin-bottom: 40px;
+  border: 1px solid #333;
+  background: #222;
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.experiment:hover {
+  transform: scale(1.02);
+}
+
+.exp-title {
+  font-family: 'Ink Journal', cursive;
+  font-size: 2em;
+  background-image: linear-gradient(45deg, #e0e0e0, #b300ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 10px;
+}
+
+.exp-date,
+.exp-content h4 {
+  background-image: linear-gradient(45deg, #f0f0f0, #b300ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.process {
+  background: #333;
+  padding: 10px;
+  border-radius: 5px;
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+.code-snippet {
+  background: #1a1a1a;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  font-family: Consolas, monospace;
+  color: #0f0;
+}
+
+.demo {
+  background: #444;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, silver, purple);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.demo:hover {
+  background: #555;
+}
+
+/* Techniques & Insights Sections */
+#techniques, #insights {
+  padding: 20px;
+}
+
+#techniques h2, #insights h2 {
+  color: purple;
+  margin-bottom: 10px;
+}
+
+/* New Media Enhancements Section */
+#media {
+  padding: 20px;
+  margin-top: 40px;
+  border-top: 2px solid #444;
+}
+
+#media h2 {
+  color: purple;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.media-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.media-item {
+  background: #222;
+  padding: 15px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  width: 320px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.media-item:hover {
+  transform: scale(1.03);
+}
+
+.media-item h3 {
+  color: silver;
+  font-family: 'Ink Journal', cursive;
+  margin-bottom: 10px;
+}
+
+/* Image gallery inside media */
+.image-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gallery-image {
+  width: 100%;
+  border: 2px solid purple;
+  border-radius: 4px;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-image:hover {
+  opacity: 0.8;
+}
+
+/* Footer */
+footer {
+  background: #111;
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9em;
+  border-top: 2px solid #444;
+  color: #aaa;
+}
+
+/* Basic Fade-In Animation */
+@keyframes fadeIn {
+  from {
+     opacity: 0; 
+    }
+  to {
+     opacity: 1; 
+    }
+}
+
+.intro, .experiment, #techniques, #insights, #media {
+  animation: fadeIn 1s ease-in;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1 class="title">The Chronicles</h1>
+      <span class="subtitle">Beware I had no idea what to do here</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#labs">The Curriculum Normalization</a></li>
+        <li><a href="#experiments">Risky Business</a></li>
+        <li><a href="#techniques">Methods of Madness</a></li>
+        <li><a href="#personal-research">Beyond the Curriculum</a></li>
+        <li><a href="notes">Notebook</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <section id="home" class="intro">
+    <h2>Welcome to My Lab Journal</h2>
+    <p>This journal captures my journey through web animations. Dive into experiments, code snippets, and interactive demos.</p>
+    <div class="featured-animation">
+      <canvas id="animationCanvas"></canvas>
+    </div>
+    <div class="featured-animation">
+      <img src="single 8 ball.png" alt="Floating Ball" class="ball-image">
+    </div>
+  </section>
+  
+  <section id="experiments">
+    <h2>Experiments Log</h2>
+    <div class="experiment" data-id="1">
+      <h3 class="exp-title">Experiment 1: Floating Elements</h3>
+      <p class="exp-date">Date: 2025-05-10</p>
+      <div class="exp-content">
+      <h4>Objective &amp; Concepts</h4>
+      <p>Explore the dynamic behavior of elements with CSS animations and JavaScript sequencing.</p>
+      
+      <h4>Process Log</h4>
+      <div class="process">
+        <p>1. Defined keyframes in CSS for smooth motion.</p>
+        <p>2. Applied transitions with JavaScript event triggers.</p>
+      </div>
+      
+      <h4>Code Snippets</h4>
+      <pre class="code-snippet">
+  &lt;div class="floating"&gt;Hello&lt;/div&gt;
+
+  .floating {
+    animation: float 3s infinite;
+  }
+      </pre>
+      
+      <h4>Demo</h4>
+      <div class="demo" id="demo1">Interactive Demo (Click to Run)</div>
+      
+      <h4>Reflections &amp; Improvements</h4>
+      <p>Found that easing functions greatly impact smoothness. Future experiments will include real-time controls using Visual Studio Code setup.</p>
+      
+      <h4>Additional Resources</h4>
+      <p><a href="week 1 test page.html" class="experiment-link">View detailed experiment documentation</a></p>
+      </div>
+    </div>
+    
+    <div class="experiment" data-id="2">
+      <h3 class="exp-title">Experiment 2: Scroll-Triggered Animation</h3>
+      <p class="exp-date">Date: 2025-05-11</p>
+      <div class="exp-content">
+        <h4>Objective &amp; Concepts</h4>
+        <p>Implement parallax scrolling and on-scroll content reveal for an engaging user experience.</p>
+        
+        <h4>Process Log</h4>
+        <div class="process">
+          <p>1. Utilized Intersection Observer for scroll detection.</p>
+          <p>2. Applied CSS transitions to fade in elements.</p>
+        </div>
+        
+        <h4>Code Snippets</h4>
+        <pre class="code-snippet">
+const options = {
+  threshold: 0.5
+};
+const observer = new IntersectionObserver(callback, options);
+        </pre>
+        
+        <h4>Demo</h4>
+        <div class="demo" id="demo2">Interactive Demo (Click to Run)</div>
+        
+        <h4>Reflections &amp; Improvements</h4>
+        <p>Scroll-triggered effects add depth and engagement. Future work will also explore libraries like GSAP for more fluid animations.</p>
+      </div>
+    </div>
+    <h4>Additional Resources</h4>
+      <p><a href="wk2.html" class="experiment-link">View detailed experiment documentation</a></p>
+      </div>
+      <div class="experiment" data-id="3">
+      <h3 class="exp-title">Experiment 3: Advanced Scroll Effects</h3>
+      <p class="exp-date">Date: 2025-05-12</p>
+      <div class="exp-content">
+        <h4>Objective &amp; Concepts</h4>
+        <p>Implement advanced scroll effects including parallax scrolling and on-scroll content reveal for an engaging user experience.</p>
+        
+        <h4>Process Log</h4>
+        <div class="process">
+          <p>1. Utilized Intersection Observer for scroll detection.</p>
+          <p>2. Applied CSS transitions to fade in elements.</p>
+        </div>
+        
+        <h4>Code Snippets</h4>
+        <pre class="code-snippet">
+const options = {
+  threshold: 0.5
+};
+const observer = new IntersectionObserver(callback, options);
+        </pre>
+        
+        <h4>Demo</h4>
+        <div class="demo" id="demo3">Interactive Demo (Click to Run)</div>
+        
+        <h4>Reflections &amp; Improvements</h4>
+        <p>Scroll-triggered effects add depth and engagement. Future work will also explore libraries like GSAP for more fluid animations.</p>
+      </div>
+    </div>
+    <h4>Additional Resources</h4>
+      <p><a href="wk3.html" class="experiment-link">View detailed experiment documentation</a></p>
+      </div>
+      <div class="experiment" data-id="4">
+      <h3 class="exp-title">Experiment 4: Interactive SVG Animations</h3>
+      <p class="exp-date">Date: 2025-05-13</p>
+      <div class="exp-content"> 
+        <h4>Objective &amp; Concepts</h4>
+        <p>Explore the use of SVGs for scalable and interactive animations, enhancing visual storytelling.</p>
+        
+        <h4>Process Log</h4>
+        <div class="process">
+          <p>1. Created SVG graphics with embedded animations.</p>
+          <p>2. Used JavaScript to control SVG properties dynamically.</p>
+        </div>
+        
+        <h4>Code Snippets</h4>
+        <pre class="code-snippet">
+&lt;svg width="100" height="100"&gt;
+  &lt;circle cx="50" cy="50" r="40" fill="red" /&gt;
+&lt;/svg&gt;
+        </pre>
+        
+        <h4>Demo</h4>
+        <div class="demo" id="demo4">Interactive Demo (Click to Run)</div>
+        <h4>Reflections &amp; Improvements</h4>
+        <p>SVG animations provide high-quality visuals that scale well. Future experiments will include more complex SVG interactions and animations.</p>
+      </div>
+      <div class="exp-content">
+        <h4>Additional Resources</h4>
+        <p><a href="wk4.html" class="experiment-link">View detailed experiment documentation</a></p>
+      </div>
+      <div class="exp-content">
+        <h4>Additional Resources</h4>
+        <p><a href="wk4_lab_step1.html" class="experiment-link">View detailed experiment documentation</a></p>
+      </div>
+
+    <div class="experiment" data-id="5">
+      <h3 class="exp-title">Experiment 5: Canvas Animations</h3>
+      <p class="exp-date">Date: 2025-05-14</p>
+      <div class="exp-content">
+        <h4>Objective &amp; Concepts</h4>
+        <p>Utilize the HTML5 canvas for complex animations and real-time graphics rendering.</p>
+        
+        <h4>Process Log</h4>
+        <div class="process">
+          <p>1. Set up a canvas element and context.</p>
+          <p>2. Implemented animation loops using requestAnimationFrame.</p>
+        </div>
+        
+        <h4>Code Snippets</h4>
+        <pre class="code-snippet">
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = 'blue';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+        </pre>
+        
+        <h4>Demo</h4>
+        <div class="demo" id="demo5">Interactive Demo (Click to Run)</div>
+        
+        <h4>Reflections &amp; Improvements</h4>
+        <p>Canvas animations allow for intricate designs and real-time interactions. Future work will explore integrating WebGL for 3D effects.</p>
+      </div>
+    </div>
+    <h4>Additional Resources</h4>
+      <p><a href="Wk_5.html" class="experiment-link">View detailed experiment documentation</a></p>
+    </div>
+    <div class="experiment" data-id="6">
+      <h3 class="exp-title">Experiment 6: Advanced Animation Libraries</h3>
+      <p class="exp-date"> Date: 2025-05-15</p>
+      <div class="exp-content">
+        <h4>Objective &amp; Concepts</h4>
+        <p>Explore advanced animation libraries like GSAP and Anime.js for complex animations and timeline control.</p>
+        
+        <h4>Process Log</h4>
+        <div class="process">
+          <p>1. Integrated GSAP library for timeline animations.</p>
+          <p>2. Created complex sequences with callbacks and easing functions.</p>
+        </div>
+        
+        <h4>Code Snippets</h4>
+        <pre class="code-snippet">
+  gsap.to(".box", { duration: 2, x: 100, rotation: 360, ease: "power2.inOut" });
+        </pre>
+        
+        <h4>Demo</h4>
+        <div class="demo" id="demo6">Interactive Demo (Click to Run)</div>
+        
+        <h4>Reflections &amp; Improvements</h4>
+        <p>Advanced libraries streamline complex animations, making them more manageable. Future experiments will focus on combining multiple libraries for enhanced effects.</p>
+      </div>
+    </div>
+    <h4>Additional Resources</h4>
+      <p><a href="wk_6_lab.html" class="experiment-link">View detailed experiment documentation</a></p>
+    </div>
+    <div class="experiment" data-id="7">
+      <h3 class="exp-title">Experiment 7: Interactive Animations with JavaScript</h3>
+      <p class="exp-date">Date: 2025-05-16</p>
+      <div class="exp-content">
+        <h4>Objective &amp; Concepts</h4>
+        <p>Implement interactive animations that respond to user input, enhancing engagement and usability.</p>
+        
+        <h4>Process Log</h4>
+        <div class="process">
+          <p>1. Used event listeners to trigger animations on user actions.</p>
+          <p>2. Created dynamic effects based on mouse movements and clicks.</p>
+        </div>
+        
+        <h4>Code Snippets</h4>
+        <pre class="code-snippet">
+document.addEventListener('mousemove', (e) => {
+  const x = e.clientX;
+  const y = e.clientY;
+  const circle = document.querySelector('.circle');
+  circle.style.transform = `translate(${x}px, ${y}px)`;
+});
+        </pre>
+        
+        <h4>Demo</h4>
+        <div class="demo" id="demo7">Interactive Demo (Click to Run)</div>
+        <h4>Reflections &amp; Improvements</h4>
+        <p>Interactive animations significantly enhance user experience. Future work will include more complex interactions and real-time feedback mechanisms.</p>
+      </div>
+    </div>
+    <h4>Additional Resources</h4> 
+      <p><a href=" https://ureff3cts.github.io/Astrological-Conclusion/" class="experiment-link">View detailed experiment documentation</a></p>
+    </div>
+
+</section>
+
+<section id="techniques">
+  <h2>Techniques &amp; Tutorials</h2>
+  <p>Detailed breakdowns of advanced animation methods including CSS keyframes, JavaScript‑driven motion, and comparisons between libraries such as GSAP and Anime.js.</p>
+  </section>
+  
+  <section id="insights">
+    <h2>Insights &amp; Reflections</h2>
+    <p>Personal observations on animation principles and industry trends, along with future improvement ideas.</p>
+  </section>
+  
+  <!-- New Media Enhancements Section -->
+  <section id="media">
+    <h2>Media Enhancements</h2>
+    <div class="media-gallery">
+      
+      <!-- Video Section -->
+      <div class="media-item">
+        <h3>Demo Video</h3>
+        <video id="demoVideo" controls width="320">
+          <source src="video/demo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <!-- Audio Section -->
+      <div class="media-item">
+        <h3>Background Audio</h3>
+        <audio id="bgAudio" controls>
+          <source src="pop.wav" type="audio/mp3">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      
+      <!-- Image Gallery Section -->
+      <div class="media-item">
+        <h3>Image Gallery</h3>
+        <div class="image-gallery">
+          <img src="a1.png" alt="Demo Image 1" class="gallery-image">
+          <img src="single 8 ball.png" alt="Demo Image 2" class="gallery-image">
+          <img src="t3.png" alt="Demo Image 3" class="gallery-image">
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  <!-- End Media Section -->
+  
+  <footer>
+    <p>Contact: amy@example.com | Connect on GitHub and CodePen. Special thanks to Visual Studio Code and the amazing animation libraries that inspire creativity.</p>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Canvas animated circle in the Intro Section
+  const canvas = document.getElementById('animationCanvas');
+  if (canvas) {
+    canvas.width = 400;
+    canvas.height = 200;
+    const ctx = canvas.getContext('2d');
+    let x = 0;
+    function animate() {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'purple';
+      ctx.beginPath();
+      ctx.arc(x, 100, 20, 0, Math.PI * 2);
+      ctx.fill();
+      x += 2;
+      if (x > canvas.width) x = 0;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+  
+  // Set up click events for interactive demos in experiments
+  const demos = document.querySelectorAll('.demo');
+  demos.forEach(demo => {
+    demo.addEventListener('click', () => {
+      alert('Demo activated! This is where your interactive demo would run.');
+    });
+  });
+  
+  // Multimedia integrations:
+  // Video: Play on hover effect for the demo video
+  const demoVideo = document.getElementById('demoVideo');
+  if (demoVideo) {
+    demoVideo.addEventListener('mouseenter', () => {
+      demoVideo.play();
+    });
+    demoVideo.addEventListener('mouseleave', () => {
+      demoVideo.pause();
+    });
+  }
+  
+  // Audio: Toggle play/pause on click of the audio element
+  const bgAudio = document.getElementById('bgAudio');
+  if (bgAudio) {
+    bgAudio.addEventListener('click', () => {
+      if (bgAudio.paused) {
+        bgAudio.play();
+      } else {
+        bgAudio.pause();
+      }
+    });
+  }
+});
+
+  </script>
+</body>
+</html>

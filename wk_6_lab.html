@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 6 Lab: Canvas Animation Game</title>
+  <style>
+    /* background canvas */
+    #cbg {
+      position: fixed;
+      z-index: 1;
+      border: 1px solid gray;
+      border-radius: 15px;
+      background-color: #ffccd9;
+    }
+    /* main animation canvas */
+    #canvas {
+      position: fixed;
+      z-index: 2;
+      border: 1px solid gray;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="cbg"    width="640" height="350"></canvas>
+  <canvas id="canvas" width="640" height="350"></canvas>
+
+  <script>
+    window.onload = function() {
+      //******************//
+      //***** Audio ******//
+      //******************//
+      var pop = document.createElement("audio");
+      pop.src = "pop.wav";
+
+      //*********************//
+      //*** Canvas set up ***//
+      //*********************//
+      var canvas      = document.getElementById("canvas"),
+          ctx         = canvas.getContext("2d");
+
+      //*************************//
+      //*** Global variables ****//
+      //*************************//
+      var N           = 5,             // starting number of balls
+          N_remaining = N,             // track remaining balls
+          balls       = [],            // array of Ball instances
+          xLimit      = canvas.width,
+          yLimit      = canvas.height,
+          maxVelocity = 2,
+          minVelocity = 1,
+          maxRadius   = 25,
+          minRadius   = 15,
+          gOver       = false;         // game over flag
+
+      // Capture mouse click
+      canvas.addEventListener("mousedown", handleClick, false);
+
+      //*************************//
+      //***** Class for Ball ****//
+      //*************************//
+      class Ball {
+        constructor(x, y, radius, vX, vY, color) {
+          this.x      = x;
+          this.y      = y;
+          this.radius = radius;
+          this.vX     = vX;
+          this.vY     = vY;
+          this.color  = color;
+        }
+        update() {
+          // move
+          this.x += this.vX;
+          this.y += this.vY;
+          // bounce off walls
+          if (this.x <= this.radius || this.x >= xLimit - this.radius) {
+            this.vX = -this.vX;
+          }
+          if (this.y <= this.radius || this.y >= yLimit - this.radius) {
+            this.vY = -this.vY;
+          }
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.strokeStyle = "gray";
+          ctx.fillStyle   = this.color;
+          ctx.shadowColor = "#000";
+          ctx.shadowBlur  = 1;
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        burst() {
+          // play sound and vanish
+          pop.play();
+          this.radius = 0;
+        }
+      }
+
+      //********************************//
+      //******* Main Game Functions ****//
+      //********************************//
+      function startGame() {
+        // instantiate balls
+        for (var i = 0; i < N; i++) {
+          balls.push(
+            new Ball(
+              getX(), getY(), getRadius(),
+              getXVel(), getYVel(), getColor()
+            )
+          );
+        }
+        // launch game loop
+        window.requestAnimationFrame(gameLoop);
+      }
+
+      function updateBalls() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < N_remaining; i++) {
+          balls[i].update();
+        }
+      }
+
+      function drawBalls() {
+        for (var i = 0; i < N_remaining; i++) {
+          balls[i].draw();
+        }
+      }
+
+      //*****************************//
+      //******* New Game Loop *******//
+      //*****************************//
+      function gameLoop() {
+        updateBalls();
+        drawBalls();
+        if (!gOver) {
+          window.requestAnimationFrame(gameLoop);
+        } else {
+          gameOver();
+        }
+      }
+
+      function handleClick(e) {
+        var mousePos = getMousePos(canvas, e),
+            mouseX   = mousePos.x,
+            mouseY   = mousePos.y;
+        // hit test each ball
+        for (var i = 0; i < balls.length; i++) {
+          var b = balls[i],
+              bxl = b.x - b.radius,
+              bxr = b.x + b.radius,
+              byt = b.y - b.radius,
+              byb = b.y + b.radius;
+          if (mouseX >= bxl && mouseX <= bxr &&
+              mouseY >= byt && mouseY <= byb) {
+            b.burst();
+            balls.splice(i, 1);
+            N_remaining--;
+            if (N_remaining <= 0) {
+              gOver = true;
+            }
+            break;  // only pop one ball per click
+          }
+        }
+      }
+
+      //*******************************************************//
+      //****************** SUPPORT FUNCTIONS  *****************//
+      //*******************************************************//
+      function getRadius() {
+        return Math.floor(minRadius + Math.random() * (maxRadius - minRadius));
+      }
+      function getColor() {
+        var letters = "0123456789ABCDEF", color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+      function getX() {
+        var t = Math.random() * xLimit;
+        if (t < maxRadius)            t = maxRadius;
+        if (t > xLimit - maxRadius)   t = xLimit - maxRadius;
+        return t;
+      }
+      function getY() {
+        var t = Math.random() * yLimit;
+        if (t < maxRadius)            t = maxRadius;
+        if (t > yLimit - maxRadius)   t = yLimit - maxRadius;
+        return t;
+      }
+      function getXVel() {
+        return (Math.random() * (maxVelocity - minVelocity) + minVelocity) * (Math.random() < 0.5 ? -1 : 1);
+      }
+      function getYVel() {
+        return (Math.random() * (maxVelocity - minVelocity) + minVelocity) * (Math.random() < 0.5 ? -1 : 1);
+      }
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+
+      //*************************************//
+      //********* Handle Game Over **********//
+      //*************************************//
+      function gameOver() {
+        ctx.beginPath();
+        ctx.font      = "55px sans";
+        ctx.fillStyle = "#009999";
+        ctx.lineWidth = 0.25;
+        ctx.fillText(
+          "GAME OVER",
+          (canvas.width  / 2) - 150,
+          (canvas.height / 2) - 20
+        );
+        ctx.beginPath();
+        ctx.fillStyle = "#f00";
+        ctx.fillText(
+          "Score = " + N,
+          (canvas.width  / 2) - 90,
+          (canvas.height / 2) + 30
+        );
+      }
+
+      // start the game!
+      startGame();
+    }; // end window.onload
+  </script>
+</body>
+</html>
